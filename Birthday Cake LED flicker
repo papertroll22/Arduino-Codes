@@ -1,0 +1,51 @@
+#define FLICKER_PERIOD_MS 20
+#define BLOW_DURATION_MS 1000
+#define BLOW_STEPS (BLOW_DURATION_MS / FLICKER_PERIOD_MS)
+#define CANDLE_COUNT 5
+#define PERCENT_BASE (100 + CANDLE_COUNT * 10)
+#define SWITCH_IN  A0
+#define SWITCH_GND A5
+
+static int candlePins[CANDLE_COUNT] = { 13, 10, 7, 4, 1 };
+
+void candle(int pin, int percent) {
+  if (percent <= 0) {
+    digitalWrite(pin, LOW);
+  } else if (percent >= 100) {
+    digitalWrite(pin, HIGH);
+  } else {
+    digitalWrite(pin, random(100) < percent ? HIGH : LOW);
+  }
+}
+
+// the setup routine runs once when you press reset:
+void setup() {
+  int i;
+  for (i = 1; i <= 13; ++i) {
+    pinMode(i, OUTPUT);
+    digitalWrite(i, LOW);
+  }
+  
+  // Switch input pin with internal pullup
+  digitalWrite(SWITCH_IN, HIGH);
+  
+  // Switch ground reference
+  pinMode(SWITCH_GND, OUTPUT);
+  digitalWrite(SWITCH_GND, LOW);
+}
+
+// the loop routine runs over and over again forever:
+void loop() {
+  static int blow = 0;
+  if (!blow && digitalRead(SWITCH_IN) == LOW) blow = 1;
+  
+  int percent;  
+  for (int i = 0; i < CANDLE_COUNT; ++i) {
+    percent = PERCENT_BASE - blow * PERCENT_BASE / BLOW_STEPS - i * 100 / CANDLE_COUNT;
+    if (percent > 80) percent = 80;
+	candle(candlePins[i], percent);
+  }
+  
+  if (blow > 0 && blow < BLOW_STEPS) ++blow;
+  delay(FLICKER_PERIOD_MS);
+}

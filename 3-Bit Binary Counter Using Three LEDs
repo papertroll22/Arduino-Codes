@@ -1,1 +1,60 @@
+const byte LED0=11;
+const byte LED1=12;
+const byte LED2=13;
 
+const word delayDuration=600;
+
+void setup()
+{
+pinMode(LED0,OUTPUT);
+pinMode(LED1,OUTPUT);
+pinMode(LED2,OUTPUT);
+}
+
+
+void showOnLEDs(byte bNumber);
+  
+void loop()
+{
+showOnLEDs(0);
+showOnLEDs(1);
+showOnLEDs(2);
+showOnLEDs(3);
+showOnLEDs(4);
+showOnLEDs(5);
+showOnLEDs(6);
+showOnLEDs(7);
+
+
+delay(delayDuration);
+delay(delayDuration);
+
+void setLEDs(byte bL2, byte bL1, byte bL0)
+{
+if (bL0==0) digitalWrite(LED0,LOW);
+else digitalWrite(LED0,HIGH);
+if (bL1==0) digitalWrite(LED1,LOW);
+else digitalWrite(LED1,HIGH);
+if (bL2==0) digitalWrite(LED2,LOW);
+else digitalWrite(LED2,HIGH);
+}
+
+void showOnLEDs(byte bNumber)
+
+/*The following might look like a lot of typing,
+but with judicious use of copy/paste, it takes no
+time at all. Also, because the code follows a
+pattern, errors are easy to spot.*/
+
+{
+if (bNumber==0) setLEDs(0,0,0);
+if (bNumber==1) setLEDs(0,0,1);
+if (bNumber==2) setLEDs(0,1,0);
+if (bNumber==3) setLEDs(0,1,1);
+if (bNumber==4) setLEDs(1,0,0);
+if (bNumber==5) setLEDs(1,0,1);
+if (bNumber==6) setLEDs(1,1,0);
+if (bNumber==7) setLEDs(1,1,1);
+
+delay(delayDuration);
+}

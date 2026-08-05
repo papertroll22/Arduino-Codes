@@ -1,5 +1,3 @@
-# Arduino-Codes
-
 int buttonState = 0;
 
 int counter;
